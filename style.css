@@ -1,0 +1,13 @@
+#bookshelf {
+	border: 1px solid black;
+	width: 300px;
+	margin: 0 auto;
+}
+
+#bookshelf th {
+	background: white;
+}
+
+body {
+	background: grey;
+}
