@@ -1,7 +1,11 @@
+#wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
 #bookshelf {
 	border: 1px solid black;
-	width: 300px;
-	margin: 0 auto;
 }
 
 #bookshelf th {
@@ -10,4 +14,8 @@
 
 body {
 	background: grey;
+}
+
+button#newBook {
+	width: 100px;
 }
