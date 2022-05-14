@@ -9,7 +9,7 @@ const bookshelf = document.getElementById('bookshelf');
 const newBookButton = document.getElementById('newBook');
 
 // Library Management
-let myLibrary = [];
+let myLibrary = JSON.parse(localStorage.getItem('bookshelf') || "[]");
 let idInteger = 0;
 
 
@@ -40,6 +40,7 @@ class Book {
 
 function addBookToLibrary(book) {
 	myLibrary.push(book);
+	localStorage.setItem('bookshelf', JSON.stringify(myLibrary));
 }
 
 function newBook() {
@@ -90,7 +91,11 @@ function renderBookshelf() {
 		cellE.innerHTML = makeRatingStars(book.rating);
 	})
 }
-renderBookshelf();
+if (myLibrary.length === 0){
+	addSampleData()
+} else {
+	renderBookshelf();
+}
 
 function makeRatingStars(howMany) {
 	let output = '';

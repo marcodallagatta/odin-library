@@ -10,8 +10,10 @@
 <body>
 
 	<div id="wrapper">
+		<h1>Javascript Bookshelf</h1>
 		<button id="newBook">New Book</button>
 		<button onclick="addSampleData()">Add Sample Books</button>
+		<button onclick="localStorage.clear();renderBookshelf();">Clear</button>
 
 		<table id="bookshelf">
 			<tr id="header">
@@ -25,7 +27,6 @@
 	</div>
 
 <script src="script.js"></script>
-<script>addSampleData();</script>
 
 </body>
 </html>
