@@ -1,5 +1,9 @@
 ({plugins:['jsdom-quokka-plugin']})
 
+// TODO
+// the script, once the initialization is done, only affect the array
+// and not the objects themselves, 'cheating' the assignment?
+
 // DOM Elements
 const bookshelf = document.getElementById('bookshelf');
 const newBookButton = document.getElementById('newBook');
@@ -8,22 +12,34 @@ const newBookButton = document.getElementById('newBook');
 let myLibrary = [];
 let idInteger = 0;
 
-function Book (title, author, read = false, rating = 0) {
-	this.id = idInteger++;
-	this.title = title;
-	this.author = author;
-	this.read = read;
-	this.rating = rating;
+
+class Book {
+	constructor (title, author, read = false, rating = 0) {
+		this.id = idInteger++;
+		this.title = title;
+		this.author = author;
+		this.read = read;
+		this.rating = rating;
+	}
+	print() {
+		console.log(`ID ${this.id}: ${this.title} by ${this.author}, rated ${this.rating}, read: ${this.read}`);
+	};
+	toggleRead() {
+		if (this.read === false) {
+			this.read = true;
+		} else {
+			this.read = false;
+		}
+		renderBookshelf();
+	}
+	removeBook(id) {
+		myLibrary.splice(id, 1);
+		renderBookshelf();
+	}
 }
 
 function addBookToLibrary(book) {
-	let currentBook = [
-		book.id, // should be the same as myLibrary[id][...]
-		book.title,
-		book.author,
-		book.read,
-		book.rating];
-	myLibrary.push(currentBook);
+	myLibrary.push(book);
 }
 
 function newBook() {
@@ -36,33 +52,17 @@ function newBook() {
 		read = false;
 	}
 	let rating = prompt('Rating from 1 to 5:');
-	const newBook = new Book(title, author, read, rating);
-	addBookToLibrary(newBook);
-}
-
-function toggleRead(id) {
-	if (myLibrary[id][3] === false) {
-		myLibrary[id][3] = true;
-	} else {
-		myLibrary[id][3] = false;
-	}
-	renderBookshelf();
-}
-
-function removeBook(id) {
-	myLibrary.splice(id, 1);
-	renderBookshelf();
+	addBookToLibrary(new Book(title, author, read, rating));
 }
 
 // Sample Data
-const Thehobbit = new Book('The Hobbit', 'Tolkien', false);
-const Steppenwolf = new Book('Steppenwolf', 'H. Hesse', true, 3);
-const Thewayofkings = new Book('The Way of Kings', 'Sandor Branderson', true, 5);
-const Thegraveyardbook = new Book('The Graveyard Book', 'Neil Gaiman', true, 5);
-addBookToLibrary(Thehobbit);
-addBookToLibrary(Steppenwolf);
-addBookToLibrary(Thewayofkings);
-addBookToLibrary(Thegraveyardbook);
+function addSampleData() {
+	addBookToLibrary(new Book('The Hobbit', 'Tolkien', false));
+	addBookToLibrary(new Book('Steppenwolf', 'H. Hesse', true, 3));
+	addBookToLibrary(new Book('The Way of Kings', 'Sandor Branderson', true, 5));
+	addBookToLibrary(new Book('The Graveyard Book', 'Neil Gaiman', true, 5));
+	renderBookshelf();
+}
 
 
 // DOM Bookshelf
@@ -76,17 +76,18 @@ function renderBookshelf() {
 	let bookIndex = 0;
 	myLibrary.forEach(book => {
 		book[0] = bookIndex++;
+		book.id = book[0];
 		let row = bookshelf.insertRow(-1);
 		let cellA = row.insertCell(0);
 		let cellB = row.insertCell(1);
 		let cellC = row.insertCell(2);
 		let cellD = row.insertCell(3);
 		let cellE = row.insertCell(4);
-		cellA.innerHTML = book[0];
-		cellB.innerHTML = `<span onclick='removeBook(${book[0]})'>x</span> ${book[1]}`;
-		cellC.innerHTML = book[2];
-		cellD.innerHTML = `<span onclick='toggleRead(${book[0]})'>${book[3]}</span>`;
-		cellE.innerHTML = makeRatingStars(book[4]);
+		cellA.innerHTML = book.id;
+		cellB.innerHTML = `<span onclick='myLibrary[${book.id}].removeBook()'>x</span> ${book.title}`;
+		cellC.innerHTML = book.author;
+		cellD.innerHTML = `<span onclick='myLibrary[${book.id}].toggleRead()'>${book.read}</span>`;
+		cellE.innerHTML = makeRatingStars(book.rating);
 	})
 }
 renderBookshelf();
