@@ -33,6 +33,20 @@ a {
 	background-color: grey;
 }
 
-.viewer {
+.bookshelf {
 	grid-column: 2;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+	align-content: start;
+	justify-items: center;
+	gap: 20px;
+	padding: 20px;
+}
+
+.book {
+	outline: 1px solid black;
+	border-radius: 1px;
+	width: 150px;
+	height: 200px;
+	padding: 10px;
 }
