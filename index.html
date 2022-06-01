@@ -9,24 +9,32 @@
 </head>
 <body>
 
-	<div id="wrapper">
-		<h1>Javascript Bookshelf</h1>
-		<button id="newBook">New Book</button>
-		<button onclick="addSampleData()">Add Sample Books</button>
-		<button onclick="localStorage.clear();renderBookshelf();">Clear</button>
+	<div class="container">
+		<div class="sidebar">
+			<h1>Bookshelf</h1>
+			<button id="newBook">New Book</button>
+			<button onclick="addSampleData()">Add Sample Books</button>
+			<button onclick="addMarcoData()">Add Marco Books</button>
+			<button onclick="clearBookshelf()">Clear</button>
+		</div>
+		<div class="viewer">
 
-		<table id="bookshelf">
-			<tr id="header">
-				<th>ID</th>
-				<th>Title</th>
-				<th>Author</th>
-				<th>Read?</th>
-				<th>Rating</th>
-			</tr>
-		</table>
-	</div>
+			<table id="bookshelf">
+				<tr id="header">
+					<th>ID</th>
+					<th>Title</th>
+					<th>Author</th>
+					<th>Read?</th>
+					<th>Rating</th>
+					<th>Pages</th>
+					<th>Pub. Year</th>
+				</tr>
+			</table>
+		</div>
 
 <script src="script.js"></script>
+<script src="data.js"></script>
+<script src="importData.js"></script>
 
 </body>
 </html>
