@@ -50,3 +50,12 @@ a {
 	height: 200px;
 	padding: 10px;
 }
+
+@media screen and (max-width:700px) {
+	.container {
+		grid-template-columns: auto;
+	}
+	.bookshelf {
+		grid-column: 1;
+	}
+}
