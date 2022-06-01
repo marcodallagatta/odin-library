@@ -1,21 +1,38 @@
-#wrapper {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+:root {
+
 }
 
-#bookshelf {
-	border: 1px solid black;
-}
-
-#bookshelf th {
-	background: white;
+html {
+	font-size: 100%;
 }
 
 body {
-	background: grey;
+	margin: 0;
+	padding: 0;
 }
 
-button#newBook {
-	width: 100px;
+ul,
+li {
+	list-style: none;
+}
+
+a {
+	text-decoration: none;
+}
+
+
+
+.container {
+	display: grid;
+	grid-template-columns: 1fr 5fr;
+	height: 100vh;
+}
+
+.sidebar {
+	grid-column: 1;
+	background-color: grey;
+}
+
+.viewer {
+	grid-column: 2;
 }

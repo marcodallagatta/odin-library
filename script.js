@@ -1,30 +1,24 @@
 ({plugins:['jsdom-quokka-plugin']})
-
-// TODO
-// the script, once the initialization is done, only affect the array
-// and not the objects themselves, 'cheating' the assignment?
+console.clear();
 
 // DOM Elements
 const bookshelf = document.getElementById('bookshelf');
 const newBookButton = document.getElementById('newBook');
 
 // Library Management
-let myLibrary = JSON.parse(localStorage.getItem('bookshelf') || "[]");
-let idInteger = 0;
+let myLibrary = [];
+idInteger = 0;
 
 
-class Book {
-	constructor (title, author, read = false, rating = 0) {
-		this.id = idInteger++;
-		this.title = title;
-		this.author = author;
-		this.read = read;
-		this.rating = rating;
-	}
-	print() {
-		console.log(`ID ${this.id}: ${this.title} by ${this.author}, rated ${this.rating}, read: ${this.read}`);
-	};
-	toggleRead() {
+function Book (title, author, read = false, rating = 0, pages = 0, pubYear = 0) {
+	this.id = idInteger++;
+	this.title = title;
+	this.author = author;
+	this.read = read;
+	this.rating = rating;
+	this.pages = pages;
+	this.pubYear = pubYear;
+	this.toggleRead = function() {
 		if (this.read === false) {
 			this.read = true;
 		} else {
@@ -32,15 +26,17 @@ class Book {
 		}
 		renderBookshelf();
 	}
-	removeBook(id) {
-		myLibrary.splice(id, 1);
+	this.removeBook = function () {
+		myLibrary.splice(this.id, 1);
+		console.log(`deleting id ${this.id}...`)
+		console.table(myLibrary);
 		renderBookshelf();
 	}
 }
 
 function addBookToLibrary(book) {
 	myLibrary.push(book);
-	localStorage.setItem('bookshelf', JSON.stringify(myLibrary));
+	console.table(myLibrary);
 }
 
 function newBook() {
@@ -62,6 +58,13 @@ function addSampleData() {
 	addBookToLibrary(new Book('Steppenwolf', 'H. Hesse', true, 3));
 	addBookToLibrary(new Book('The Way of Kings', 'Sandor Branderson', true, 5));
 	addBookToLibrary(new Book('The Graveyard Book', 'Neil Gaiman', true, 5));
+	console.table(myLibrary);
+	renderBookshelf();
+}
+
+function clearBookshelf() {
+	myLibrary = [];
+	console.table(myLibrary);
 	renderBookshelf();
 }
 
@@ -84,18 +87,28 @@ function renderBookshelf() {
 		let cellC = row.insertCell(2);
 		let cellD = row.insertCell(3);
 		let cellE = row.insertCell(4);
+		let cellF = row.insertCell(5);
+		let cellG = row.insertCell(6);
 		cellA.innerHTML = book.id;
 		cellB.innerHTML = `<span onclick='myLibrary[${book.id}].removeBook()'>x</span> ${book.title}`;
 		cellC.innerHTML = book.author;
 		cellD.innerHTML = `<span onclick='myLibrary[${book.id}].toggleRead()'>${book.read}</span>`;
-		cellE.innerHTML = makeRatingStars(book.rating);
+		cellE.innerHTML = (book.rating);
+		cellF.innerHTML = (book.pages);
+		cellG.innerHTML = (book.pubYear);
 	})
 }
-if (myLibrary.length === 0){
-	addSampleData()
-} else {
-	renderBookshelf();
-}
+
+// this.id = idInteger++;
+// this.title = title;
+// this.author = author;
+// this.read = read;
+// this.rating = rating;
+// this.pages = pages;
+// this.pubYear = pubYear;
+
+addSampleData();
+renderBookshelf();
 
 function makeRatingStars(howMany) {
 	let output = '';
