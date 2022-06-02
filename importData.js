@@ -22,6 +22,9 @@ function CSVToArray (strData, strDelimiter){
 function addMarcoData() {
 	const imported = CSVToArray(goodreads);
 	imported.forEach(i => {
+	if (i[0].length > 50) {
+		i[0] = i[0].slice(0,50) + ' [...]';
+	}
 	addBookToLibrary(new Book(
 		i[0],
 		i[1],

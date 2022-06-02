@@ -69,8 +69,16 @@ function renderBookshelf() {
 	myLibrary.forEach(book => {
 		let bookDiv = document.createElement('div');
 		bookDiv.classList.add('book');
-		const randomColor = Math.floor(Math.random()*16777215).toString(16);
-		bookDiv.style.backgroundColor = "#" + randomColor;
+		const randomColor1 = Please.make_color({format: 'hsv'});
+		const randomColor2 = Please.make_scheme(
+																					{
+																						h: randomColor1[0].h,
+																						s: randomColor1[0].s,
+																						v: randomColor1[0].v
+																					});
+		bookDiv.style.backgroundColor = `hsl(${Math.floor(randomColor1[0].h)}, ${randomColor1[0].s*100}%, ${randomColor1[0].v*100}%)`;
+		console.log(randomColor2[1]);
+		bookDiv.style.borderLeft = "15px solid " + randomColor2[1];
 		bookDiv.innerHTML = `<h3>${book.title}</h3><h4>${book.author}</h4>`;
 		bookshelf.appendChild(bookDiv);
 	})
