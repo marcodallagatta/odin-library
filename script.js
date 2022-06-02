@@ -1,22 +1,27 @@
 ({plugins:['jsdom-quokka-plugin']})
 
+// TODO
+// add book cover
+// add sorting
+// add modal to show details and review
+
 // DOM Elements
 const bookshelf = document.querySelector('.bookshelf');
-const newBookButton = document.getElementById('newBook');
 
 // Library Management
 let myLibrary = [];
 idInteger = 0;
 
 
-function Book (title, author, read = false, rating = 0, pages = 0, pubYear = 0) {
+function Book (title, author, ISBN13 = '', rating = 0, pages = '', yearPublished, ogYearPublished, exclusiveShelf = false, review = '') {
 	this.id = idInteger++;
 	this.title = title;
 	this.author = author;
-	this.read = read;
+	this.isbn = ISBN13;
 	this.rating = rating;
 	this.pages = pages;
-	this.pubYear = pubYear;
+	this.yearPublished = isNaN(ogYearPublished) ? yearPublished: ogYearPublished;
+	this.read = (exclusiveShelf === 'read') ? true : false;
 	this.toggleRead = function() {
 		if (this.read === false) {
 			this.read = true;
@@ -46,6 +51,10 @@ function newBook() {
 	}
 	let rating = prompt('Rating from 1 to 5:');
 	addBookToLibrary(new Book(title, author, read, rating));
+	renderBookshelf();
+	renderBookshelf();
+	renderBookshelf();
+	renderBookshelf();
 }
 
 // Sample Data
@@ -65,25 +74,47 @@ function clearBookshelf() {
 
 
 // DOM Bookshelf
+
+// book cover https://www.googleapis.com/books/v1/volumes?q=isbn:9780062407801
+
+
+// fetch(googleApiUrl)
+// 	.then(response => response.json())
+// 	.then(data => coverArt = data.items[0].volumeInfo.imageLinks.smallThumbnail)
+	// .then(data => console.log(data.items[0].volumeInfo.imageLinks.smallThumbnail));
+// const coverArt = data.items[0].volumeInfo.imageLinks.smallThumbnail;
+// console.log(coverArt);
+
+// function fetchCoverArt(isbn) {
+// 	const googleApiUrl = `https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn.replace(/[="]/g,'')}`;
+// 	console.log(googleApiUrl);
+//   fetch(googleApiUrl)
+// 			.then((res) => res.json())
+//    	  .then(output => {return output.items[0].volumeInfo.imageLinks.smallThumbnail;}
+// 	);
+// }
+
+
+
 function renderBookshelf() {
+	bookshelf.innerHTML = '';
 	myLibrary.forEach(book => {
 		let bookDiv = document.createElement('div');
 		bookDiv.classList.add('book');
-		const randomColor1 = Please.make_color({format: 'hsv'});
-		const randomColor2 = Please.make_scheme(
-																					{
-																						h: randomColor1[0].h,
-																						s: randomColor1[0].s,
-																						v: randomColor1[0].v
-																					});
-		bookDiv.style.backgroundColor = `hsl(${Math.floor(randomColor1[0].h)}, ${randomColor1[0].s*100}%, ${randomColor1[0].v*100}%)`;
-		console.log(randomColor2[1]);
-		bookDiv.style.borderLeft = "15px solid " + randomColor2[1];
+
+		// if (book.isbn.includes('9')) {
+		// 	bookDiv.style.backgroundImage = `url("${fetchCoverArt(book.isbn)}")`;
+		// } else {
+			const randomColor1 = Please.make_color({format: 'hsv'});
+			const randomColor2 = Please.make_scheme({h: randomColor1[0].h, s: randomColor1[0].s, v: randomColor1[0].v});
+			bookDiv.style.borderLeft = "15px solid " + randomColor2[1];
+			bookDiv.style.backgroundColor = `hsl(${Math.floor(randomColor1[0].h)}, ${randomColor1[0].s*100}%, ${randomColor1[0].v*100}%)`;
+		// }
 		bookDiv.innerHTML = `<h3>${book.title}</h3><h4>${book.author}</h4>`;
 		bookshelf.appendChild(bookDiv);
 	})
 }
-addSampleData();
+addMarcoData();
 renderBookshelf();
 
 function makeRatingStars(howMany) {
@@ -96,9 +127,3 @@ function makeRatingStars(howMany) {
 	}
 	return output;
 }
-
-// Event Listeners
-newBookButton.addEventListener('click', function() {
-	newBook();
-	renderBookshelf();
-});
